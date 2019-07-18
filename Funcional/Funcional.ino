@@ -1,16 +1,19 @@
 #include "DHT.h"
 #include <LiquidCrystal.h> 
+#include <Servo.h>
+
 #define DHTPIN A1
 #define DHTYPE DHT11
-
 #define ledPin 22
 
+Servo myservo; 
 DHT dht(DHTPIN, DHTYPE);
 
 LiquidCrystal lcd(1, 2, 4, 5, 6, 7 );
 
 float Temp = 30;
-float hum = 60;
+float hum = 80;
+int pos_servo = 0; 
 
 void setup() {
   // put your setup code here, to run once:
@@ -20,13 +23,16 @@ void setup() {
   dht.begin();
   
   pinMode(ledPin,0);
+  myservo.attach(24); 
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
  float t = dht.readTemperature(); 
  float h = dht.readHumidity();
-
+ 
+  myservo.write(0);
+  digitalWrite(ledPin, 0);
 
   lcd.setCursor(0,0);
   lcd.print("Temp: ");
@@ -37,8 +43,7 @@ void loop() {
   lcd.print(h,1);
   lcd.print(" %");
 
-
-  if (t>Temp){
+  /*if (t>Temp){
     digitalWrite(ledPin, 1);
   } else {
     if (t < Temp) {
@@ -47,16 +52,47 @@ void loop() {
       //digitalWrite(2,LOW); 
       digitalWrite(13, HIGH);
     }
-
     else {
       if (h < hum) {
-        digitalWrite(2, HIGH);
+        //myservo.write(90);
+        //delay(5000); 
+        //myservo.write(pos_servo);
         
       } else {
         digitalWrite(2,LOW); 
       }
     }
-  }
+  }*/
+
+if(t > Temp && h < hum) {
+  digitalWrite(ledPin, 1); 
+  myservo.write(90);
+  delay (2000);
+  myservo.write(0);
+} else 
+  if (t > Temp && h > hum ){
+    digitalWrite(ledPin, 1);
+    myservo.write(0);
+    delay (2000);
+    myservo.write(0);
+    }
+   else 
+    if (t < Temp && h < hum) {
+      digitalWrite(ledPin, 0); 
+      myservo.write(90); 
+      delay (2000);
+      myservo.write(0);
+    }
+   else 
+    if (t < Temp && h > hum){
+      digitalWrite(ledPin, 0); 
+      myservo.write(0); 
+      delay (2000);
+      myservo.write(0);
+    }
+  
+
+  
   delay(1000);
   lcd.clear();
 }
