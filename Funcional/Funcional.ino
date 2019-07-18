@@ -50,29 +50,29 @@ void loop() {
 //Definicion de posibles casos entre temperatura y humedad para dar determinismo
 if(t > Temp && h < hum) {
   digitalWrite(ledPin, 1); 
-  myservo.write(180);
-  delay (2000);
   myservo.write(0);
+  delay (2000);
+  myservo.write(180);
 } else 
   if (t > Temp && h > hum ){
     digitalWrite(ledPin, 1);
-    myservo.write(0);
-    delay (2000);
-    myservo.write(0);
+    myservo.write(180);
+    //delay (2000);
+    //myservo.write(0);
     }
    else 
     if (t < Temp && h < hum) {
       digitalWrite(ledPin, 0); 
-      myservo.write(180); 
+      myservo.write(0); 
       delay (2000);
-      myservo.write(0);
+      myservo.write(180);
     }
    else 
     if (t < Temp && h > hum){
       digitalWrite(ledPin, 0); 
-      myservo.write(0); 
-      delay (2000);
-      myservo.write(0);
+      myservo.write(180); 
+      //delay (2000);
+      //myservo.write(0);
     }
     
   delay(1000);
