@@ -2,12 +2,15 @@
 #include <LiquidCrystal.h> 
 #define DHTPIN A1
 #define DHTYPE DHT11
+
+#define ledPin 22
+
 DHT dht(DHTPIN, DHTYPE);
 
 LiquidCrystal lcd(1, 2, 4, 5, 6, 7 );
 
-int Temp = 30;
-int hum = 60;
+float Temp = 30;
+float hum = 60;
 
 void setup() {
   // put your setup code here, to run once:
@@ -15,10 +18,8 @@ void setup() {
   lcd.begin(16,2);
   //lcd.setCursor(0,0);
   dht.begin();
-  pinMode(22,OUTPUT);
-  pinMode(11,OUTPUT);
-  pinMode(2,OUTPUT);
-  pinMode(13,OUTPUT);
+  
+  pinMode(ledPin,0);
 }
 
 void loop() {
@@ -30,18 +31,15 @@ void loop() {
   lcd.setCursor(0,0);
   lcd.print("Temp: ");
   lcd.print(t,1);
-  lcd.print("C");
+  lcd.print(" C");
   lcd.setCursor(0,1);
   lcd.print("Hum: ");
   lcd.print(h,1);
-  lcd.print("%");
+  lcd.print(" %");
 
 
   if (t>Temp){
-    digitalWrite(22, HIGH);
-    digitalWrite(11, HIGH);
-    //digitalWrite(2,LOW); 
-    digitalWrite(13, LOW);
+    digitalWrite(ledPin, 1);
   } else {
     if (t < Temp) {
       digitalWrite(22, LOW);
